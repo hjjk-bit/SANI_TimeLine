@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+
+<!-- saved from url=(0157)https://gpt.chesspnt.com/file_download/saasnexus-69c5decb-6ce4-832b-92ec-5d0f5b8a506a:21251c3e-d901-46fb-9958-090b592ccde9:mnt_data_sani_dashboard_match.html -->
+<html lang="zh-CN"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>SANI 供应链时间轴驾驶舱 V3</title>
+<style>
+:root {
+  --bg1:#07142a; --bg2:#0a1e3f; --panel:#091a36; --panel2:#0b2348; --line:#16355f;
+  --text:#f2f6ff; --muted:#9eb5d8; --muted2:#77a0d7;
+  --red:#ff5f73; --yellow:#ffbd3c; --green:#3be58f; --gray:#d5e1f4; --blue:#4f9cff;
+  --glow:0 14px 40px rgba(0,0,0,.25); --radius:26px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:
+radial-gradient(1300px 700px at -10% -10%, #153d7a 0%, rgba(21,61,122,0) 48%),
+radial-gradient(900px 600px at 110% 0%, #0f2b59 0%, rgba(15,43,89,0) 48%),
+linear-gradient(180deg,var(--bg2),var(--bg1) 42%,#061427 100%);color:var(--text)}
+.page{width:100%;max-width:none;margin:0;padding:18px 18px 26px}
+.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}
+.title h1{margin:0;font-size:30px;font-weight:900;letter-spacing:.3px}
+.title p{margin:8px 0 0;color:#a7c1e7;font-size:14px}
+.meta{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+.meta-pill{background:rgba(9,26,54,.75);border:1px solid rgba(103,145,207,.2);backdrop-filter:blur(8px);border-radius:999px;padding:6px 12px;font-size:12px;color:#f5f9ff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
+.controls{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.left-stack,.right-stack{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn{appearance:none;border:none;color:#eef5ff;background:linear-gradient(180deg,#102a52,#0a2144);border:1px solid rgba(105,151,218,.2);padding:11px 18px;border-radius:16px;font-weight:800;font-size:14px;cursor:pointer;box-shadow:var(--glow)}
+.btn.active{outline:2px solid rgba(255,190,88,.95);background:linear-gradient(180deg,#173a71,#0d2d5a)}
+.btn.secondary{padding:9px 15px;border-radius:999px;font-weight:700;background:rgba(16,42,82,.9)}
+.checkbox-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(9,26,54,.75);border:1px solid rgba(105,151,218,.18);padding:9px 12px;border-radius:14px;color:#d8e8ff;font-size:13px}
+.checkbox-pill input{accent-color:#67aaff;width:14px;height:14px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.card{background:linear-gradient(180deg,rgba(9,26,54,.96),rgba(6,20,39,.96));border:1px solid rgba(76,116,176,.26);border-radius:28px;padding:16px 18px;box-shadow:var(--glow);position:relative;overflow:hidden}
+.card::after{content:"";position:absolute;inset:0;border-radius:28px;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
+.span-12{grid-column:span 12} .span-8{grid-column:span 8} .span-7{grid-column:span 7} .span-6{grid-column:span 6} .span-5{grid-column:span 5}
+.kpis{display:grid;grid-template-columns:1.25fr 1.2fr 1fr 1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+.kpi{min-height:108px;display:flex;flex-direction:column;justify-content:space-between;padding:18px 20px;border-radius:24px;background:linear-gradient(180deg,rgba(8,30,63,.94),rgba(5,18,35,.94));border:1px solid rgba(81,128,194,.24);box-shadow:var(--glow)}
+.kpi .label{color:#a7c0e6;font-size:13px;font-weight:700}
+.kpi .value{font-size:26px;font-weight:900;letter-spacing:.4px}
+.kpi .value.big{font-size:38px}
+.status-pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:9px 14px;border:1px solid rgba(255,255,255,.08);font-weight:800;font-size:15px;width:max-content}
+.status-dot{width:16px;height:16px;border-radius:50%}
+.red{color:var(--red)} .yellow{color:var(--yellow)} .green{color:var(--green)}
+.status-red{background:rgba(255,95,115,.12);color:#ffdce2;border-color:rgba(255,95,115,.35)}
+.status-yellow{background:rgba(255,189,60,.12);color:#fff0ca;border-color:rgba(255,189,60,.35)}
+.status-green{background:rgba(59,229,143,.12);color:#ddffed;border-color:rgba(59,229,143,.35)}
+.section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
+.section-head h2{margin:0;font-size:17px;line-height:1.25}
+.section-head p{margin:4px 0 0;color:#a0b8db;font-size:12px}
+.smallbtn{border:none;border-radius:14px;padding:9px 12px;background:rgba(16,42,82,.75);color:#f2f7ff;border:1px solid rgba(105,151,218,.18);font-weight:700}
+.timeline-wrap{margin-top:10px;border-radius:22px;background:linear-gradient(180deg,rgba(10,33,68,.58),rgba(6,20,39,.18));border:1px solid rgba(69,106,160,.14);padding:14px 14px 10px;overflow:auto;min-height:320px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;color:#bdd0ee;font-size:12px;margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.legend .diamond{width:10px;height:10px;transform:rotate(45deg);border-radius:0;background:#dce6f6}
+.info-stack{display:grid;gap:10px}
+.info-box{border:1px solid rgba(84,126,188,.24);background:rgba(10,33,68,.38);border-radius:18px;padding:14px 16px}
+.info-box h4{margin:0 0 6px;font-size:14px}
+.info-box p{margin:0;color:#d7e6fb;line-height:1.45}
+.table{width:100%;border-collapse:collapse;margin-top:10px}
+.table th,.table td{padding:14px 12px;border-bottom:1px solid rgba(93,129,184,.2);font-size:14px;text-align:left}
+.table th{color:#eef5ff;font-weight:800} .table td{color:#d6e4fa}
+.table td.num{text-align:center;font-weight:800} .table .red{color:var(--red)} .table .yellow{color:var(--yellow)} .table .green{color:var(--green)}
+.detail-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.table-wrap{max-height:560px;overflow:auto;border-radius:18px;border:1px solid rgba(93,129,184,.18)}
+.footer{margin-top:16px;color:#8eabd1;font-size:12px}
+.tooltip{position:fixed;z-index:9999;pointer-events:none;max-width:320px;padding:10px 12px;border-radius:14px;background:rgba(5,16,34,.96);border:1px solid rgba(106,154,223,.35);box-shadow:0 10px 30px rgba(0,0,0,.35);color:#f2f6ff;font-size:12px;line-height:1.55;opacity:0;transform:translateY(4px);transition:opacity .12s ease,transform .12s ease}
+.tooltip.show{opacity:1;transform:translateY(0)}
+.timeline-node{cursor:pointer}
+.clock-pill{font-variant-numeric:tabular-nums;font-weight:900;font-size:15px;color:#60d4ff !important;letter-spacing:.5px;border-color:rgba(96,212,255,.35) !important;}
+.hidden{display:none !important}
+@media (max-width: 1200px){.kpis{grid-template-columns:repeat(2,1fr)}.span-8,.span-7,.span-6,.span-5{grid-column:span 12}}
+@media (max-width: 760px){.kpis{grid-template-columns:1fr}.page{padding:14px}.title h1{font-size:24px}}
+
+/* global tooltip */
+.timeline-hover-tooltip{
+  position: fixed;
+  z-index: 99999;
+  pointer-events: none;
+  display: none;
+  max-width: 360px;
+  background: rgba(15,23,42,0.96);
+  color: #fff;
+  border: 1px solid rgba(148,163,184,0.35);
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+  font-size: 12px;
+  line-height: 1.6;
+  backdrop-filter: blur(6px);
+}
+.timeline-hover-tooltip .tt-title{
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #93c5fd;
+}
+.timeline-hover-tooltip .tt-row{
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 6px;
+}
+.timeline-hover-tooltip .tt-k{
+  color: #cbd5e1;
+}
+.timeline-hover-tooltip .tt-v{
+  color: #fff;
+}
+
+
+/* fullscreen tooltip compatibility */
+:fullscreen .timeline-hover-tooltip,
+:-webkit-full-screen .timeline-hover-tooltip {
+  z-index: 2147483647 !important;
+}
+
+
+/* hide original label hover duplicates */
+.timeline-label,
+.node-label,
+.tag-label,
+.label-bubble,
+.timeline-tag,
+.timeline-node-label {
+  pointer-events: none !important;
+}
+
+/* prevent duplicate hover cards if any */
+.timeline-hover-card,
+.native-tooltip,
+.default-tooltip {
+  display: none !important;
+}
+
+
+/* 轻量视觉优化 */
+#overviewTimeline svg line[stroke="#7fa9de"],
+#overviewTimeline svg path[stroke="#7fa9de"],
+#overviewTimeline svg polyline[stroke="#7fa9de"]{
+  display:none !important;
+}
+
+#overviewTimeline svg > line[stroke="rgba(212,225,244,.55)"],
+#deptTimeline svg > line[stroke="rgba(212,225,244,.35)"]{
+  opacity:.45 !important;
+}
+
+#overviewTimeline circle,
+#deptTimeline circle{
+  filter:none !important;
+  stroke-width:.9 !important;
+}
+
+.timeline-hover-tooltip,
+.tooltip{
+  box-shadow:0 8px 20px rgba(0,0,0,.22) !important;
+  border-color:rgba(148,163,184,.22) !important;
+}
+
+/* 节点轻微错位，减少重叠感 */
+#overviewTimeline svg circle:nth-of-type(3n){
+  transform: translateY(-4px);
+  transform-box: fill-box;
+}
+#overviewTimeline svg circle:nth-of-type(3n+1){
+  transform: translateY(4px);
+  transform-box: fill-box;
+}
+#deptTimeline svg circle:nth-of-type(2n){
+  transform: translateY(-3px);
+  transform-box: fill-box;
+}
+
+
+/* ===== 产品化视觉增强 ===== */
+
+/* 1. 删除所有蓝色偏移虚线（包含部门泳道） */
+svg line[stroke="#7fa9de"],
+svg path[stroke="#7fa9de"],
+svg polyline[stroke="#7fa9de"]{
+  display:none !important;
+}
+
+/* 2. 横向泳道线更弱 */
+svg > line[stroke*="rgba(212,225,244"]{
+  opacity:.3 !important;
+}
+
+/* 3. 节点视觉优化 */
+circle{
+  filter:none !important;
+  stroke-width:.8 !important;
+  opacity:.95;
+}
+
+/* 4. 节点错位（更自然） */
+#overviewTimeline svg circle:nth-of-type(4n){
+  transform: translateY(-6px);
+  transform-box: fill-box;
+}
+#overviewTimeline svg circle:nth-of-type(4n+1){
+  transform: translateY(6px);
+  transform-box: fill-box;
+}
+
+/* 5. tooltip 产品化 */
+.tooltip, .timeline-hover-tooltip{
+  border-radius:12px !important;
+  padding:12px 14px !important;
+  font-size:12px !important;
+  line-height:1.6 !important;
+  box-shadow:0 12px 30px rgba(0,0,0,.28) !important;
+  border:1px solid rgba(148,163,184,.25) !important;
+}
+
+/* 标题层级优化 */
+.section-head h2{
+  font-size:18px !important;
+  font-weight:800 !important;
+}
+.section-head p{
+  font-size:12px !important;
+  opacity:.8;
+}
+
+/* 6. 全屏占满优化 */
+.card:fullscreen,
+.card:-webkit-full-screen{
+  width:100vw !important;
+  height:100vh !important;
+  margin:0 !important;
+  border-radius:0 !important;
+  padding:16px 20px !important;
+  box-sizing:border-box !important;
+  overflow:auto !important;
+}
+
+/* timeline铺满 */
+.card:fullscreen .timeline-wrap,
+.card:-webkit-full-screen .timeline-wrap{
+  height:calc(100vh - 70px) !important;
+  overflow:hidden !important;
+}
+
+/* svg 全屏铺满 */
+.card:fullscreen .timeline-wrap svg,
+.card:-webkit-full-screen .timeline-wrap svg{
+  width:100% !important;
+  height:100% !important;
+}
+
+/* section-head 全屏紧凑 */
+.card:fullscreen .section-head,
+.card:-webkit-full-screen .section-head{
+  margin-bottom:8px !important;
+}
+
+/* 全屏背景纯黑 */
+:fullscreen,
+:-webkit-full-screen{
+  background:#020c1b !important;
+}
+
+</style>
+
+<script id="remove-delay-blue-lines-patch-js">
+(function(){
+  function isDelayLikeGraphic(el){
+    if (!el || !el.tagName) return false;
+    const tag = el.tagName.toLowerCase();
+    if (!['line','path','polyline','div','span'].includes(tag)) return false;
+
+    const cls = (el.getAttribute('class') || '').toLowerCase();
+    const role = (el.getAttribute('data-role') || '').toLowerCase();
+    const txt = (el.getAttribute('aria-label') || '').toLowerCase();
+    const st = (el.getAttribute('style') || '').toLowerCase();
+    const stroke = (el.getAttribute('stroke') || '').toLowerCase();
+
+    if (
+      cls.includes('delay') || cls.includes('offset') || cls.includes('deviation') || cls.includes('lag') ||
+      role.includes('delay') || role.includes('offset') || txt.includes('delay') || txt.includes('offset')
+    ) return true;
+
+    // 兜底：识别“细长横向蓝线”
+    if (tag === 'line') {
+      const x1 = parseFloat(el.getAttribute('x1') || '0');
+      const x2 = parseFloat(el.getAttribute('x2') || '0');
+      const y1 = parseFloat(el.getAttribute('y1') || '0');
+      const y2 = parseFloat(el.getAttribute('y2') || '0');
+      const lenX = Math.abs(x2 - x1);
+      const lenY = Math.abs(y2 - y1);
+      if (lenX > 18 && lenY < 3 && ['#60a5fa','#3b82f6','#93c5fd'].includes(stroke)) return true;
+      if (lenX > 18 && lenY < 3 && (st.includes('#60a5fa') || st.includes('#3b82f6') || st.includes('#93c5fd'))) return true;
+    }
+
+    if (tag === 'path' || tag === 'polyline') {
+      const d = (el.getAttribute('d') || '').trim();
+      // 常见横线 path：M x y L x y
+      if ((stroke in {'#60a5fa':1,'#3b82f6':1,'#93c5fd':1}) || st.includes('#60a5fa') || st.includes('#3b82f6') || st.includes('#93c5fd')) {
+        const nums = (d.match(/-?\d+(\.\d+)?/g) || []).map(Number);
+        if (nums.length >= 4) {
+          const xs = nums.filter((_,i)=>i%2===0);
+          const ys = nums.filter((_,i)=>i%2===1);
+          const lenX = Math.max.apply(null, xs) - Math.min.apply(null, xs);
+          const lenY = Math.max.apply(null, ys) - Math.min.apply(null, ys);
+          if (lenX > 18 && lenY < 4) return true;
+        }
+      }
+    }
+
+    // HTML 细横线
+    if (tag === 'div' || tag === 'span') {
+      const style = window.getComputedStyle(el);
+      const w = parseFloat(style.width || '0');
+      const h = parseFloat(style.height || '0');
+      const bg = (style.background || '') + ' ' + (style.backgroundColor || '') + ' ' + (style.borderColor || '');
+      if (w > 18 && h <= 4 && (bg.includes('59, 130, 246') || bg.includes('96, 165, 250') || bg.includes('147, 197, 253'))) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function removeDelayBlueLines(root){
+    const scope = root || document;
+    const all = scope.querySelectorAll('svg line, svg path, svg polyline, div, span');
+    all.forEach(function(el){
+      if (isDelayLikeGraphic(el)) {
+        el.style.display = 'none';
+        el.style.opacity = '0';
+        el.style.stroke = 'none';
+        el.setAttribute('data-delay-removed', '1');
+      }
+    });
+  }
+
+  removeDelayBlueLines(document);
+  document.addEventListener('fullscreenchange', function(){ removeDelayBlueLines(document); });
+  document.addEventListener('webkitfullscreenchange', function(){ removeDelayBlueLines(document); });
+  window.addEventListener('resize', function(){ removeDelayBlueLines(document); });
+
+  const mo = new MutationObserver(function(muts){
+    for (const m of muts) {
+      if (m.addedNodes && m.addedNodes.length) {
+        m.addedNodes.forEach(function(n){
+          if (n.nodeType === 1) removeDelayBlueLines(n);
+        });
+      }
+    }
+  });
+  if (document.body) { mo.observe(document.body, {childList:true, subtree:true}); } else { document.addEventListener("DOMContentLoaded", function(){ mo.observe(document.body, {childList:true, subtree:true}); }); }
+})();
+</script>
+</head>
+<body>
+<div class="page">
+<div class="topbar">
+<div class="title">
+<h1>SANI 供应链时间轴驾驶舱 V3</h1>
+<p>融合总览、波段时间轴、部门泳道和红黄灯预警。支持标签自动避让，且各模块可一键放大内嵌全屏。</p>
+</div>
+<div class="meta">
+<div class="meta-pill clock-pill" id="current-time">当前时间：--</div>
+
+<div class="meta-pill">数据源：底表 + 节点责任清单</div>
+<div class="meta-pill" id="meta-time">更新时间：2026/3/27 09:59:45</div>
+</div>
+</div>
+<div class="controls">
+<div class="left-stack" id="bandButtons"><button class="btn active" onclick="setBand('ALL')">总览</button><button class="btn" onclick="setBand('30X061')">30X061</button><button class="btn" onclick="setBand('Q071')">Q071</button></div>
+<div class="right-stack">
+<div id="statusButtons"><button class="btn secondary active" onclick="setStatusMode('all')">全部状态</button><button class="btn secondary" onclick="setStatusMode('redyellow')">只看红黄灯</button><button class="btn secondary" onclick="setStatusMode('red')">只看红灯</button><button class="btn secondary" onclick="setStatusMode('yellow')">只看黄灯</button></div>
+<label class="checkbox-pill"><input checked="" id="togglePlanned" type="checkbox"/> 显示计划节点</label>
+<label class="checkbox-pill" style="opacity:.45;cursor:not-allowed;" title="已统一关闭，避免标签重复覆盖"><input disabled="" id="toggleLabels" type="checkbox"/> 显示节点标签（已关闭）</label>
+<div class="checkbox-pill">标签拥挤时自动上下错层避让</div>
+</div>
+</div>
+<div class="kpis" id="kpis">
+<div class="kpi"><div class="label">查看范围</div><div class="value big">全波段</div></div>
+<div class="kpi"><div class="label">整体状态</div><div class="value"><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></div></div>
+<div class="kpi"><div class="label">红灯数</div><div class="value big red">13</div></div>
+<div class="kpi"><div class="label">黄灯数</div><div class="value big yellow">4</div></div>
+<div class="kpi"><div class="label">绿灯数</div><div class="value big green">7</div></div>
+<div class="kpi"><div class="label">波段 / 节点</div><div class="value big">3 / 24</div></div></div>
+<div class="grid">
+<div class="card span-12">
+<div class="section-head">
+<div><h2 id="overviewTitle">多波段横轴时间轴总览</h2><p id="overviewSub">每行一个波段，适合管理层总览</p></div>
+<button class="smallbtn" onclick="fullscreenCard(this)">全屏</button>
+</div>
+<div class="timeline-wrap"><div id="overviewTimeline"><svg viewbox="0 0 960 430" width="100%" xmlns="http://www.w3.org/2000/svg"><defs><filter id="glow"><fegaussianblur result="b" stddeviation="2.6"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs><line stroke="rgba(102,141,198,.15)" x1="80" x2="80" y1="26" y2="408"></line><text fill="#8db0df" font-size="12" x="82" y="18">3月</text><line stroke="rgba(102,141,198,.15)" x1="241.88888888888889" x2="241.88888888888889" y1="26" y2="408"></line><text fill="#8db0df" font-size="12" x="243.88888888888889" y="18">4月</text><line stroke="rgba(102,141,198,.15)" x1="398.55555555555554" x2="398.55555555555554" y1="26" y2="408"></line><text fill="#8db0df" font-size="12" x="400.55555555555554" y="18">5月</text><line stroke="rgba(102,141,198,.15)" x1="560.4444444444443" x2="560.4444444444443" y1="26" y2="408"></line><text fill="#8db0df" font-size="12" x="562.4444444444443" y="18">6月</text><line stroke="rgba(102,141,198,.15)" x1="717.1111111111111" x2="717.1111111111111" y1="26" y2="408"></line><text fill="#8db0df" font-size="12" x="719.1111111111111" y="18">7月</text><line stroke="rgba(102,141,198,.15)" x1="879" x2="879" y1="26" y2="408"></line><text fill="#8db0df" font-size="12" x="881" y="18">8月</text><text fill="#eff6ff" font-size="16" font-weight="800" x="8" y="85">30X051</text><line stroke="rgba(212,225,244,.55)" stroke-dasharray="4 4" x1="80" x2="926" y1="80" y2="80"></line><polygon fill="#dce6f6" opacity="0.95" points="207.07407407407408,70 215.07407407407408,80 207.07407407407408,90 199.07407407407408,80"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="207.07407407407408" x2="217.51851851851853" y1="80" y2="80"></line><circle cx="217.51851851851853" cy="80" fill="#ffbd3c" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="217.51851851851853" x2="217.51851851851853" y1="73" y2="64"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="58" x="188.51851851851853" y="40"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="217.51851851851853" y="56">订货会</text><polygon fill="#dce6f6" opacity="0.95" points="222.74074074074076,70 230.74074074074076,80 222.74074074074076,90 214.74074074074076,80"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="222.74074074074076" x2="462.96296296296293" y1="80" y2="80"></line><circle cx="462.96296296296293" cy="80" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="462.96296296296293" x2="462.96296296296293" y1="73" y2="48"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="72" x="426.96296296296293" y="24"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="462.96296296296293" y="40">下单完成</text><polygon fill="#dce6f6" opacity="0.95" points="332.4074074074074,70 340.4074074074074,80 332.4074074074074,90 324.4074074074074,80"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="332.4074074074074" x2="468.1851851851852" y1="80" y2="80"></line><circle cx="468.1851851851852" cy="80" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="468.1851851851852" x2="468.1851851851852" y1="73" y2="64"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="72" x="432.1851851851852" y="40"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="468.1851851851852" y="56">面料确认</text><polygon fill="#dce6f6" opacity="0.95" points="462.96296296296293,70 470.96296296296293,80 462.96296296296293,90 454.96296296296293,80"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="462.96296296296293" x2="478.6296296296296" y1="80" y2="80"></line><circle cx="478.6296296296296" cy="80" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="478.6296296296296" x2="478.6296296296296" y1="73" y2="48"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="72" x="442.6296296296296" y="24"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="478.6296296296296" y="40">面料到位</text><polygon fill="#dce6f6" opacity="0.95" points="473.4074074074074,70 481.4074074074074,80 473.4074074074074,90 465.4074074074074,80"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="473.4074074074074" x2="478.6296296296296" y1="80" y2="80"></line><circle cx="478.6296296296296" cy="80" fill="#ffbd3c" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="478.6296296296296" x2="478.6296296296296" y1="73" y2="64"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="44" x="456.6296296296296" y="40"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="478.6296296296296" y="56">开裁</text><polygon fill="#dce6f6" opacity="0.95" points="598.7407407407408,70 606.7407407407408,80 598.7407407407408,90 590.7407407407408,80"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="598.7407407407408" x2="483.85185185185185" y1="80" y2="80"></line><circle cx="483.85185185185185" cy="80" fill="#3be58f" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="483.85185185185185" x2="483.85185185185185" y1="73" y2="48"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="72" x="447.85185185185185" y="24"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="483.85185185185185" y="40">生产完成</text><polygon fill="#dce6f6" opacity="0.95" points="609.1851851851852,70 617.1851851851852,80 609.1851851851852,90 601.1851851851852,80"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="609.1851851851852" x2="489.0740740740741" y1="80" y2="80"></line><circle cx="489.0740740740741" cy="80" fill="#3be58f" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="489.0740740740741" x2="489.0740740740741" y1="73" y2="64"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="44" x="467.0740740740741" y="40"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="489.0740740740741" y="56">入仓</text><polygon fill="#dce6f6" opacity="0.95" points="661.4074074074074,70 669.4074074074074,80 661.4074074074074,90 653.4074074074074,80"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="661.4074074074074" x2="494.2962962962963" y1="80" y2="80"></line><circle cx="494.2962962962963" cy="80" fill="#3be58f" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="494.2962962962963" x2="494.2962962962963" y1="73" y2="48"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="44" x="472.2962962962963" y="24"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="494.2962962962963" y="40">上货</text><text fill="#eff6ff" font-size="16" font-weight="800" x="8" y="203">30X052</text><line stroke="rgba(212,225,244,.55)" stroke-dasharray="4 4" x1="80" x2="926" y1="198" y2="198"></line><polygon fill="#dce6f6" opacity="0.95" points="264.51851851851853,188 272.51851851851853,198 264.51851851851853,208 256.51851851851853,198"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="264.51851851851853" x2="499.51851851851853" y1="198" y2="198"></line><circle cx="499.51851851851853" cy="198" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="499.51851851851853" x2="499.51851851851853" y1="191" y2="182"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="58" x="470.51851851851853" y="158"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="499.51851851851853" y="174">订货会</text><polygon fill="#dce6f6" opacity="0.95" points="280.1851851851852,188 288.1851851851852,198 280.1851851851852,208 272.1851851851852,198"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="280.1851851851852" x2="504.74074074074076" y1="198" y2="198"></line><circle cx="504.74074074074076" cy="198" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="504.74074074074076" x2="504.74074074074076" y1="191" y2="166"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="72" x="468.74074074074076" y="142"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="504.74074074074076" y="158">下单完成</text><polygon fill="#dce6f6" opacity="0.95" points="384.6296296296297,188 392.6296296296297,198 384.6296296296297,208 376.6296296296297,198"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="384.6296296296297" x2="509.96296296296293" y1="198" y2="198"></line><circle cx="509.96296296296293" cy="198" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="509.96296296296293" x2="509.96296296296293" y1="191" y2="182"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="72" x="473.96296296296293" y="158"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="509.96296296296293" y="174">面料确认</text><polygon fill="#dce6f6" opacity="0.95" points="499.51851851851853,188 507.51851851851853,198 499.51851851851853,208 491.51851851851853,198"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="499.51851851851853" x2="515.1851851851852" y1="198" y2="198"></line><circle cx="515.1851851851852" cy="198" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="515.1851851851852" x2="515.1851851851852" y1="191" y2="166"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="72" x="479.1851851851852" y="142"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="515.1851851851852" y="158">面料到位</text><polygon fill="#dce6f6" opacity="0.95" points="509.96296296296293,188 517.9629629629629,198 509.96296296296293,208 501.96296296296293,198"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="509.96296296296293" x2="520.4074074074074" y1="198" y2="198"></line><circle cx="520.4074074074074" cy="198" fill="#ffbd3c" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="520.4074074074074" x2="520.4074074074074" y1="191" y2="182"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="44" x="498.4074074074074" y="158"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="520.4074074074074" y="174">开裁</text><polygon fill="#dce6f6" opacity="0.95" points="635.2962962962963,188 643.2962962962963,198 635.2962962962963,208 627.2962962962963,198"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="635.2962962962963" x2="525.6296296296297" y1="198" y2="198"></line><circle cx="525.6296296296297" cy="198" fill="#3be58f" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="525.6296296296297" x2="525.6296296296297" y1="191" y2="166"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="72" x="489.6296296296297" y="142"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="525.6296296296297" y="158">生产完成</text><polygon fill="#dce6f6" opacity="0.95" points="650.962962962963,188 658.962962962963,198 650.962962962963,208 642.962962962963,198"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="650.962962962963" x2="530.8518518518517" y1="198" y2="198"></line><circle cx="530.8518518518517" cy="198" fill="#3be58f" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="530.8518518518517" x2="530.8518518518517" y1="191" y2="182"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="44" x="508.85185185185173" y="158"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="530.8518518518517" y="174">入仓</text><polygon fill="#dce6f6" opacity="0.95" points="703.1851851851852,188 711.1851851851852,198 703.1851851851852,208 695.1851851851852,198"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="703.1851851851852" x2="536.0740740740741" y1="198" y2="198"></line><circle cx="536.0740740740741" cy="198" fill="#3be58f" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="536.0740740740741" x2="536.0740740740741" y1="191" y2="166"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="44" x="514.0740740740741" y="142"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="536.0740740740741" y="158">上货</text><text fill="#eff6ff" font-size="16" font-weight="800" x="8" y="321">30X053</text><line stroke="rgba(212,225,244,.55)" stroke-dasharray="4 4" x1="80" x2="926" y1="316" y2="316"></line><polygon fill="#dce6f6" opacity="0.95" points="316.74074074074076,306 324.74074074074076,316 316.74074074074076,326 308.74074074074076,316"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="316.74074074074076" x2="541.2962962962963" y1="316" y2="316"></line><circle cx="541.2962962962963" cy="316" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="541.2962962962963" x2="541.2962962962963" y1="309" y2="300"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="58" x="512.2962962962963" y="276"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="541.2962962962963" y="292">订货会</text><polygon fill="#dce6f6" opacity="0.95" points="332.4074074074074,306 340.4074074074074,316 332.4074074074074,326 324.4074074074074,316"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="332.4074074074074" x2="546.5185185185185" y1="316" y2="316"></line><circle cx="546.5185185185185" cy="316" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="546.5185185185185" x2="546.5185185185185" y1="309" y2="284"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="72" x="510.5185185185185" y="260"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="546.5185185185185" y="276">下单完成</text><polygon fill="#dce6f6" opacity="0.95" points="436.85185185185185,306 444.85185185185185,316 436.85185185185185,326 428.85185185185185,316"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="436.85185185185185" x2="551.7407407407406" y1="316" y2="316"></line><circle cx="551.7407407407406" cy="316" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="551.7407407407406" x2="551.7407407407406" y1="309" y2="300"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="72" x="515.7407407407406" y="276"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="551.7407407407406" y="292">面料确认</text><polygon fill="#dce6f6" opacity="0.95" points="551.7407407407406,306 559.7407407407406,316 551.7407407407406,326 543.7407407407406,316"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="551.7407407407406" x2="556.9629629629629" y1="316" y2="316"></line><circle cx="556.9629629629629" cy="316" fill="#ffbd3c" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="556.9629629629629" x2="556.9629629629629" y1="309" y2="284"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="72" x="520.9629629629629" y="260"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="556.9629629629629" y="276">面料到位</text><polygon fill="#dce6f6" opacity="0.95" points="562.1851851851852,306 570.1851851851852,316 562.1851851851852,326 554.1851851851852,316"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="562.1851851851852" x2="718.8518518518518" y1="316" y2="316"></line><circle cx="718.8518518518518" cy="316" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="718.8518518518518" x2="718.8518518518518" y1="309" y2="300"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="44" x="696.8518518518518" y="276"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="718.8518518518518" y="292">开裁</text><polygon fill="#dce6f6" opacity="0.95" points="687.5185185185185,306 695.5185185185185,316 687.5185185185185,326 679.5185185185185,316"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="687.5185185185185" x2="724.074074074074" y1="316" y2="316"></line><circle cx="724.074074074074" cy="316" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="724.074074074074" x2="724.074074074074" y1="309" y2="284"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="72" x="688.074074074074" y="260"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="724.074074074074" y="276">生产完成</text><polygon fill="#dce6f6" opacity="0.95" points="703.1851851851852,306 711.1851851851852,316 703.1851851851852,326 695.1851851851852,316"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="703.1851851851852" x2="729.2962962962963" y1="316" y2="316"></line><circle cx="729.2962962962963" cy="316" fill="#ff5f73" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="729.2962962962963" x2="729.2962962962963" y1="309" y2="300"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="44" x="707.2962962962963" y="276"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="729.2962962962963" y="292">入仓</text><polygon fill="#dce6f6" opacity="0.95" points="739.7407407407406,306 747.7407407407406,316 739.7407407407406,326 731.7407407407406,316"></polygon><line opacity="0.9" stroke="#7fa9de" stroke-dasharray="4 4" x1="739.7407407407406" x2="734.5185185185186" y1="316" y2="316"></line><circle cx="734.5185185185186" cy="316" fill="#3be58f" filter="url(#glow)" r="7.5" stroke="#ebf3ff" stroke-width="1.2"></circle><line opacity=".7" stroke="#98bbe8" x1="734.5185185185186" x2="734.5185185185186" y1="309" y2="284"></line><rect fill="#133764" height="24" rx="10" ry="10" stroke="rgba(123,164,224,.28)" width="44" x="712.5185185185186" y="260"></rect><text fill="#eff6ff" font-size="11" font-weight="700" text-anchor="middle" x="734.5185185185186" y="276">上货</text></svg></div></div>
+<div class="legend">
+<span><i style="background:var(--red)"></i>红灯 / 延误</span>
+<span><i style="background:var(--yellow)"></i>黄灯 / 风险</span>
+<span><i style="background:var(--green)"></i>绿灯 / 正常</span>
+<span><i class="diamond"></i>菱形 = 计划节点</span>
+<span><i style="background:#7fa9de;border-radius:999px"></i>灰色虚线 = 计划到实际偏移</span>
+</div>
+</div>
+<div class="card span-12">
+<div class="section-head">
+<div><h2 id="deptTimelineTitle">全波段 部门泳道时间轴</h2><p id="deptTimelineSub">各部门已映射到总时间轴</p></div>
+<button class="smallbtn" onclick="fullscreenCard(this)">全屏</button>
+</div>
+<div class="timeline-wrap"><div id="deptTimeline"><svg viewbox="0 0 960 530" width="100%" xmlns="http://www.w3.org/2000/svg"><line stroke="rgba(102,141,198,.15)" x1="100" x2="100" y1="26" y2="508"></line><text fill="#8db0df" font-size="12" x="102" y="18">3月</text><line stroke="rgba(102,141,198,.15)" x1="258.0617283950617" x2="258.0617283950617" y1="26" y2="508"></line><text fill="#8db0df" font-size="12" x="260.0617283950617" y="18">4月</text><line stroke="rgba(102,141,198,.15)" x1="411.0246913580247" x2="411.0246913580247" y1="26" y2="508"></line><text fill="#8db0df" font-size="12" x="413.0246913580247" y="18">5月</text><line stroke="rgba(102,141,198,.15)" x1="569.0864197530864" x2="569.0864197530864" y1="26" y2="508"></line><text fill="#8db0df" font-size="12" x="571.0864197530864" y="18">6月</text><line stroke="rgba(102,141,198,.15)" x1="722.0493827160494" x2="722.0493827160494" y1="26" y2="508"></line><text fill="#8db0df" font-size="12" x="724.0493827160494" y="18">7月</text><line stroke="rgba(102,141,198,.15)" x1="880.1111111111111" x2="880.1111111111111" y1="26" y2="508"></line><text fill="#8db0df" font-size="12" x="882.1111111111111" y="18">8月</text><text fill="#eff6ff" font-size="15" font-weight="800" x="8" y="77">商品部</text><line stroke="rgba(212,225,244,.35)" x1="100" x2="926" y1="72" y2="72"></line><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="224.06995884773664" x2="234.26748971193416" y1="72" y2="72"></line><polygon fill="#dce6f6" opacity="0.95" points="224.06995884773664,65 230.06995884773664,72 224.06995884773664,79 218.06995884773664,72"></polygon><circle cx="234.26748971193416" cy="72" fill="#ffbd3c" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="234.26748971193416" y="54">订货会</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="239.36625514403292" x2="473.90946502057614" y1="72" y2="72"></line><polygon fill="#dce6f6" opacity="0.95" points="239.36625514403292,65 245.36625514403292,72 239.36625514403292,79 233.36625514403292,72"></polygon><circle cx="473.90946502057614" cy="72" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="473.90946502057614" y="100">下单完成</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="280.156378600823" x2="509.60082304526753" y1="72" y2="72"></line><polygon fill="#dce6f6" opacity="0.95" points="280.156378600823,65 286.156378600823,72 280.156378600823,79 274.156378600823,72"></polygon><circle cx="509.60082304526753" cy="72" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="509.60082304526753" y="54">订货会</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="295.4526748971193" x2="514.6995884773663" y1="72" y2="72"></line><polygon fill="#dce6f6" opacity="0.95" points="295.4526748971193,65 301.4526748971193,72 295.4526748971193,79 289.4526748971193,72"></polygon><circle cx="514.6995884773663" cy="72" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="514.6995884773663" y="100">下单完成</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="331.14403292181066" x2="550.3909465020577" y1="72" y2="72"></line><polygon fill="#dce6f6" opacity="0.95" points="331.14403292181066,65 337.14403292181066,72 331.14403292181066,79 325.14403292181066,72"></polygon><circle cx="550.3909465020577" cy="72" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="550.3909465020577" y="54">订货会</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="346.44032921810697" x2="555.4897119341564" y1="72" y2="72"></line><polygon fill="#dce6f6" opacity="0.95" points="346.44032921810697,65 352.44032921810697,72 346.44032921810697,79 340.44032921810697,72"></polygon><circle cx="555.4897119341564" cy="72" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="555.4897119341564" y="100">下单完成</text><text fill="#eff6ff" font-size="15" font-weight="800" x="8" y="153">工厂</text><line stroke="rgba(212,225,244,.35)" x1="100" x2="926" y1="148" y2="148"></line><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="484.10699588477365" x2="489.20576131687244" y1="148" y2="148"></line><polygon fill="#dce6f6" opacity="0.95" points="484.10699588477365,141 490.10699588477365,148 484.10699588477365,155 478.10699588477365,148"></polygon><circle cx="489.20576131687244" cy="148" fill="#ffbd3c" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="489.20576131687244" y="130">开裁</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="606.477366255144" x2="494.30452674897117" y1="148" y2="148"></line><polygon fill="#dce6f6" opacity="0.95" points="606.477366255144,141 612.477366255144,148 606.477366255144,155 600.477366255144,148"></polygon><circle cx="494.30452674897117" cy="148" fill="#3be58f" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="494.30452674897117" y="176">生产完成</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="519.798353909465" x2="529.9958847736625" y1="148" y2="148"></line><polygon fill="#dce6f6" opacity="0.95" points="519.798353909465,141 525.798353909465,148 519.798353909465,155 513.798353909465,148"></polygon><circle cx="529.9958847736625" cy="148" fill="#ffbd3c" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="529.9958847736625" y="130">开裁</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="642.1687242798354" x2="535.0946502057614" y1="148" y2="148"></line><polygon fill="#dce6f6" opacity="0.95" points="642.1687242798354,141 648.1687242798354,148 642.1687242798354,155 636.1687242798354,148"></polygon><circle cx="535.0946502057614" cy="148" fill="#3be58f" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="535.0946502057614" y="176">生产完成</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="570.7860082304527" x2="723.7489711934156" y1="148" y2="148"></line><polygon fill="#dce6f6" opacity="0.95" points="570.7860082304527,141 576.7860082304527,148 570.7860082304527,155 564.7860082304527,148"></polygon><circle cx="723.7489711934156" cy="148" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="723.7489711934156" y="130">开裁</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="693.156378600823" x2="728.8477366255144" y1="148" y2="148"></line><polygon fill="#dce6f6" opacity="0.95" points="693.156378600823,141 699.156378600823,148 693.156378600823,155 687.156378600823,148"></polygon><circle cx="728.8477366255144" cy="148" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="728.8477366255144" y="176">生产完成</text><text fill="#eff6ff" font-size="15" font-weight="800" x="8" y="229">采购/研发</text><line stroke="rgba(212,225,244,.35)" x1="100" x2="926" y1="224" y2="224"></line><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="346.44032921810697" x2="479.0082304526749" y1="224" y2="224"></line><polygon fill="#dce6f6" opacity="0.95" points="346.44032921810697,217 352.44032921810697,224 346.44032921810697,231 340.44032921810697,224"></polygon><circle cx="479.0082304526749" cy="224" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="479.0082304526749" y="206">面料确认</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="397.42798353909467" x2="519.798353909465" y1="224" y2="224"></line><polygon fill="#dce6f6" opacity="0.95" points="397.42798353909467,217 403.42798353909467,224 397.42798353909467,231 391.42798353909467,224"></polygon><circle cx="519.798353909465" cy="224" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="519.798353909465" y="252">面料确认</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="448.4156378600823" x2="560.5884773662551" y1="224" y2="224"></line><polygon fill="#dce6f6" opacity="0.95" points="448.4156378600823,217 454.4156378600823,224 448.4156378600823,231 442.4156378600823,224"></polygon><circle cx="560.5884773662551" cy="224" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="560.5884773662551" y="206">面料确认</text><text fill="#eff6ff" font-size="15" font-weight="800" x="8" y="305">采购</text><line stroke="rgba(212,225,244,.35)" x1="100" x2="926" y1="300" y2="300"></line><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="473.90946502057614" x2="489.20576131687244" y1="300" y2="300"></line><polygon fill="#dce6f6" opacity="0.95" points="473.90946502057614,293 479.90946502057614,300 473.90946502057614,307 467.90946502057614,300"></polygon><circle cx="489.20576131687244" cy="300" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="489.20576131687244" y="282">面料到位</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="509.60082304526753" x2="524.8971193415638" y1="300" y2="300"></line><polygon fill="#dce6f6" opacity="0.95" points="509.60082304526753,293 515.6008230452676,300 509.60082304526753,307 503.60082304526753,300"></polygon><circle cx="524.8971193415638" cy="300" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="524.8971193415638" y="328">面料到位</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="560.5884773662551" x2="565.687242798354" y1="300" y2="300"></line><polygon fill="#dce6f6" opacity="0.95" points="560.5884773662551,293 566.5884773662551,300 560.5884773662551,307 554.5884773662551,300"></polygon><circle cx="565.687242798354" cy="300" fill="#ffbd3c" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="565.687242798354" y="282">面料到位</text><text fill="#eff6ff" font-size="15" font-weight="800" x="8" y="381">仓储/物流</text><line stroke="rgba(212,225,244,.35)" x1="100" x2="926" y1="376" y2="376"></line><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="616.6748971193416" x2="499.40329218106996" y1="376" y2="376"></line><polygon fill="#dce6f6" opacity="0.95" points="616.6748971193416,369 622.6748971193416,376 616.6748971193416,383 610.6748971193416,376"></polygon><circle cx="499.40329218106996" cy="376" fill="#3be58f" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="499.40329218106996" y="358">入仓</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="657.4650205761317" x2="540.19341563786" y1="376" y2="376"></line><polygon fill="#dce6f6" opacity="0.95" points="657.4650205761317,369 663.4650205761317,376 657.4650205761317,383 651.4650205761317,376"></polygon><circle cx="540.19341563786" cy="376" fill="#3be58f" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="540.19341563786" y="404">入仓</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="708.4526748971193" x2="733.9465020576132" y1="376" y2="376"></line><polygon fill="#dce6f6" opacity="0.95" points="708.4526748971193,369 714.4526748971193,376 708.4526748971193,383 702.4526748971193,376"></polygon><circle cx="733.9465020576132" cy="376" fill="#ff5f73" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="733.9465020576132" y="358">入仓</text><text fill="#eff6ff" font-size="15" font-weight="800" x="8" y="457">营销端</text><line stroke="rgba(212,225,244,.35)" x1="100" x2="926" y1="452" y2="452"></line><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="667.6625514403293" x2="504.50205761316874" y1="452" y2="452"></line><polygon fill="#dce6f6" opacity="0.95" points="667.6625514403293,445 673.6625514403293,452 667.6625514403293,459 661.6625514403293,452"></polygon><circle cx="504.50205761316874" cy="452" fill="#3be58f" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="504.50205761316874" y="434">上货</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="708.4526748971193" x2="545.2921810699588" y1="452" y2="452"></line><polygon fill="#dce6f6" opacity="0.95" points="708.4526748971193,445 714.4526748971193,452 708.4526748971193,459 702.4526748971193,452"></polygon><circle cx="545.2921810699588" cy="452" fill="#3be58f" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="545.2921810699588" y="480">上货</text><line opacity="0.7" stroke="#7fa9de" stroke-dasharray="4 4" x1="744.1440329218107" x2="739.0452674897119" y1="452" y2="452"></line><polygon fill="#dce6f6" opacity="0.95" points="744.1440329218107,445 750.1440329218107,452 744.1440329218107,459 738.1440329218107,452"></polygon><circle cx="739.0452674897119" cy="452" fill="#3be58f" r="7" stroke="#ebf3ff" stroke-width="1.1"></circle><text fill="#dce9fb" font-size="10" text-anchor="middle" x="739.0452674897119" y="434">上货</text></svg></div></div>
+</div>
+<div class="card span-6">
+<div class="section-head">
+<div><h2>当前焦点</h2><p>所选范围自动更新</p></div>
+<button class="smallbtn" onclick="fullscreenCard(this)">全屏</button>
+</div>
+<div class="info-stack" id="focusPanel"><div class="info-box"><h4>总览结论</h4><p><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span> 当前筛选：全部状态</p></div><div class="info-box"><h4>最需关注波段</h4><p>30X053 当前红灯 6 个，黄灯 1 个。</p></div><div class="info-box"><h4>阅读建议</h4><p>先看横轴总览判断哪个波段拖尾最长，再切换到对应波段看各部门泳道与责任归属。</p></div></div>
+</div>
+<div class="card span-6">
+<div class="section-head">
+<div><h2 id="deptTableTitle">全波段 部门状态分布</h2><p>红黄绿数量</p></div>
+<button class="smallbtn" onclick="fullscreenCard(this)">全屏</button>
+</div>
+<div id="deptTable"><table class="table"><thead><tr><th>部门</th><th class="num">红</th><th class="num">黄</th><th class="num">绿</th><th class="num">待更新</th><th class="num">总数</th></tr></thead><tbody><tr><td>商品部</td><td class="num red">5</td><td class="num yellow">1</td><td class="num green">0</td><td class="num">0</td><td class="num">6</td></tr><tr><td>工厂</td><td class="num red">2</td><td class="num yellow">2</td><td class="num green">2</td><td class="num">0</td><td class="num">6</td></tr><tr><td>采购/研发</td><td class="num red">3</td><td class="num yellow">0</td><td class="num green">0</td><td class="num">0</td><td class="num">3</td></tr><tr><td>采购</td><td class="num red">2</td><td class="num yellow">1</td><td class="num green">0</td><td class="num">0</td><td class="num">3</td></tr><tr><td>仓储/物流</td><td class="num red">1</td><td class="num yellow">0</td><td class="num green">2</td><td class="num">0</td><td class="num">3</td></tr><tr><td>营销端</td><td class="num red">0</td><td class="num yellow">0</td><td class="num green">3</td><td class="num">0</td><td class="num">3</td></tr></tbody></table></div>
+</div>
+<div class="card span-12">
+<div class="detail-head">
+<div><h2 style="margin:0">底表明细</h2><p style="margin:4px 0 0;color:#a0b8db;font-size:12px">可按波段和状态动态筛选</p></div>
+</div>
+<div class="table-wrap"><table class="table" id="detailTable"><thead><tr><th>波段</th><th>节点序号</th><th>关键节点</th><th>计划时间</th><th>实际时间</th><th>偏差天数</th><th>节点状态</th><th>责任部门</th><th>责任人</th></tr></thead><tbody><tr><td>30X051</td><td>1</td><td>订货会</td><td>2026-03-25</td><td>2026-03-27</td><td>2</td><td><span class="status-pill status-yellow"><span class="status-dot" style="background:var(--yellow)"></span>风险</span></td><td>商品部</td><td>商品总监/商品负责人</td></tr><tr><td>30X051</td><td>2</td><td>下单完成</td><td>2026-03-28</td><td>2026-05-13</td><td>46</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>商品部</td><td>商品负责人</td></tr><tr><td>30X051</td><td>3</td><td>面料确认</td><td>2026-04-18</td><td>2026-05-14</td><td>26</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>采购/研发</td><td>采购负责人</td></tr><tr><td>30X051</td><td>4</td><td>面料到位</td><td>2026-05-13</td><td>2026-05-16</td><td>3</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>采购</td><td>采购负责人</td></tr><tr><td>30X051</td><td>5</td><td>开裁</td><td>2026-05-15</td><td>2026-05-16</td><td>1</td><td><span class="status-pill status-yellow"><span class="status-dot" style="background:var(--yellow)"></span>风险</span></td><td>工厂</td><td>厂长</td></tr><tr><td>30X051</td><td>6</td><td>生产完成</td><td>2026-06-08</td><td>2026-05-17</td><td>-22</td><td><span class="status-pill status-green"><span class="status-dot" style="background:var(--green)"></span>正常</span></td><td>工厂</td><td>厂长</td></tr><tr><td>30X051</td><td>7</td><td>入仓</td><td>2026-06-10</td><td>2026-05-18</td><td>-23</td><td><span class="status-pill status-green"><span class="status-dot" style="background:var(--green)"></span>正常</span></td><td>仓储/物流</td><td>仓储负责人</td></tr><tr><td>30X051</td><td>8</td><td>上货</td><td>2026-06-20</td><td>2026-05-19</td><td>-32</td><td><span class="status-pill status-green"><span class="status-dot" style="background:var(--green)"></span>正常</span></td><td>营销端</td><td>渠道负责人</td></tr><tr><td>30X052</td><td>1</td><td>订货会</td><td>2026-04-05</td><td>2026-05-20</td><td>45</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>商品部</td><td>商品总监/商品负责人</td></tr><tr><td>30X052</td><td>2</td><td>下单完成</td><td>2026-04-08</td><td>2026-05-21</td><td>43</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>商品部</td><td>商品负责人</td></tr><tr><td>30X052</td><td>3</td><td>面料确认</td><td>2026-04-28</td><td>2026-05-22</td><td>24</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>采购/研发</td><td>采购负责人</td></tr><tr><td>30X052</td><td>4</td><td>面料到位</td><td>2026-05-20</td><td>2026-05-23</td><td>3</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>采购</td><td>采购负责人</td></tr><tr><td>30X052</td><td>5</td><td>开裁</td><td>2026-05-22</td><td>2026-05-24</td><td>2</td><td><span class="status-pill status-yellow"><span class="status-dot" style="background:var(--yellow)"></span>风险</span></td><td>工厂</td><td>厂长</td></tr><tr><td>30X052</td><td>6</td><td>生产完成</td><td>2026-06-15</td><td>2026-05-25</td><td>-21</td><td><span class="status-pill status-green"><span class="status-dot" style="background:var(--green)"></span>正常</span></td><td>工厂</td><td>厂长</td></tr><tr><td>30X052</td><td>7</td><td>入仓</td><td>2026-06-18</td><td>2026-05-26</td><td>-23</td><td><span class="status-pill status-green"><span class="status-dot" style="background:var(--green)"></span>正常</span></td><td>仓储/物流</td><td>仓储负责人</td></tr><tr><td>30X052</td><td>8</td><td>上货</td><td>2026-06-28</td><td>2026-05-27</td><td>-32</td><td><span class="status-pill status-green"><span class="status-dot" style="background:var(--green)"></span>正常</span></td><td>营销端</td><td>渠道负责人</td></tr><tr><td>30X053</td><td>1</td><td>订货会</td><td>2026-04-15</td><td>2026-05-28</td><td>43</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>商品部</td><td>商品总监/商品负责人</td></tr><tr><td>30X053</td><td>2</td><td>下单完成</td><td>2026-04-18</td><td>2026-05-29</td><td>41</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>商品部</td><td>商品负责人</td></tr><tr><td>30X053</td><td>3</td><td>面料确认</td><td>2026-05-08</td><td>2026-05-30</td><td>22</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>采购/研发</td><td>采购负责人</td></tr><tr><td>30X053</td><td>4</td><td>面料到位</td><td>2026-05-30</td><td>2026-05-31</td><td>1</td><td><span class="status-pill status-yellow"><span class="status-dot" style="background:var(--yellow)"></span>风险</span></td><td>采购</td><td>采购负责人</td></tr><tr><td>30X053</td><td>5</td><td>开裁</td><td>2026-06-01</td><td>2026-07-01</td><td>30</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>工厂</td><td>厂长</td></tr><tr><td>30X053</td><td>6</td><td>生产完成</td><td>2026-06-25</td><td>2026-07-02</td><td>7</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>工厂</td><td>厂长</td></tr><tr><td>30X053</td><td>7</td><td>入仓</td><td>2026-06-28</td><td>2026-07-03</td><td>5</td><td><span class="status-pill status-red"><span class="status-dot" style="background:var(--red)"></span>延误</span></td><td>仓储/物流</td><td>仓储负责人</td></tr><tr><td>30X053</td><td>8</td><td>上货</td><td>2026-07-05</td><td>2026-07-04</td><td>-1</td><td><span class="status-pill status-green"><span class="status-dot" style="background:var(--green)"></span>正常</span></td><td>营销端</td><td>渠道负责人</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="tooltip" id="timelineTooltip"></div>
+<div class="footer">说明：该版本为单文件本地页面，直接双击即可使用。已按上传文件内容生成多波段总览、部门泳道和明细视图。</div>
+</div>
+<script>
+const DATA = {"meta":{"title":"SANI供应链经营驾驶舱（本地动态版）","today":"2026-04-10 16:18:03","source":"生产进度跟踪表.xlsx"},"summary":{"bands":2,"nodes":27,"red":12,"yellow":4,"green":5,"pending":6,"overall":"🔴 延误"},"bands":[{"band":"30X061","overall":"🔴 延误","red":4,"yellow":2,"green":4,"pending":3,"dangerousNode":"大货质检完成时间","dangerDept":"生产部","dangerOwner":"钱桂花","dangerStatus":"🔴 延误","dangerDelay":5,"weeklyConclusion":"该波段已有红灯节点，必须本周拍板解决","deptBreakdown":[{"责任部门":"生产部","红灯":2,"黄灯":1,"绿灯":0,"待更新":2,"节点数":5,"风险指数":8},{"责任部门":"商品部","红灯":1,"黄灯":0,"绿灯":2,"待更新":1,"节点数":4,"风险指数":5},{"责任部门":"采购部","红灯":1,"黄灯":0,"绿灯":1,"待更新":0,"节点数":2,"风险指数":4},{"责任部门":"研发中心","红灯":0,"黄灯":1,"绿灯":0,"待更新":0,"节点数":1,"风险指数":2},{"责任部门":"供应中心","红灯":0,"黄灯":0,"绿灯":1,"待更新":0,"节点数":1,"风险指数":1}],"upcoming":[],"nodes":[{"波段":"30X061","节点序号":1,"关键节点":"下单时间","计划时间":"2025-12-19","实际时间":"2025-12-19","偏差天数":0,"节点状态":"🟢 正常","责任部门":"商品部","责任人":"马茜","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":1},{"波段":"30X061","节点序号":2,"关键节点":"物料卡BOM交接","计划时间":"2025-12-29","实际时间":"2025-12-31","偏差天数":2,"节点状态":"🟡 风险","责任部门":"研发中心","责任人":"廖媚娜","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":2},{"波段":"30X061","节点序号":3,"关键节点":"面料统计完成时间","计划时间":"2026-01-01","实际时间":"2026-01-01","偏差天数":0,"节点状态":"🟢 正常","责任部门":"采购部","责任人":"李珍","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":1},{"波段":"30X061","节点序号":4,"关键节点":"面料合同签定时间","计划时间":"2026-03-09","实际时间":"2026-03-13","偏差天数":4,"节点状态":"🔴 延误","责任部门":"采购部","责任人":"李珍","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"30X061","节点序号":5,"关键节点":"FOB合同签定","计划时间":"2026-03-24","实际时间":"2026-03-24","偏差天数":0,"节点状态":"🟢 正常","责任部门":"供应中心","责任人":"江小强","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":1},{"波段":"30X061","节点序号":6,"关键节点":"面料入仓时间","计划时间":"2026-04-23","实际时间":"2026-04-25","偏差天数":2,"节点状态":"🟡 风险","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":2},{"波段":"30X061","节点序号":7,"关键节点":"开裁","计划时间":"","实际时间":"","偏差天数":"","节点状态":"待更新","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":0},{"波段":"30X061","节点序号":8,"关键节点":"大货质检完成时间","计划时间":"2026-05-22","实际时间":"2026-05-27","偏差天数":5,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"30X061","节点序号":9,"关键节点":"生产入仓时间","计划时间":"2026-05-23","实际时间":"2026-05-26","偏差天数":3,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"30X061","节点序号":10,"关键节点":"回货时间","计划时间":"2026-05-23","实际时间":"","偏差天数":"","节点状态":"待更新","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":0},{"波段":"30X061","节点序号":11,"关键节点":"发货时间","计划时间":"2026-05-30","实际时间":"2026-05-30","偏差天数":0,"节点状态":"🟢 正常","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":1},{"波段":"30X061","节点序号":12,"关键节点":"南上货时间","计划时间":"2026-06-02","实际时间":"2026-06-05","偏差天数":3,"节点状态":"🔴 延误","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"30X061","节点序号":13,"关键节点":"北上货时间","计划时间":"2026-06-02","实际时间":"","偏差天数":"","节点状态":"待更新","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":0}]},{"band":"Q071","overall":"🔴 延误","red":8,"yellow":2,"green":1,"pending":3,"dangerousNode":"面料入仓时间","dangerDept":"生产部","dangerOwner":"钱桂花","dangerStatus":"🔴 延误","dangerDelay":35,"weeklyConclusion":"该波段已有红灯节点，必须本周拍板解决","deptBreakdown":[{"责任部门":"生产部","红灯":3,"黄灯":1,"绿灯":0,"待更新":1,"节点数":5,"风险指数":11},{"责任部门":"商品部","红灯":3,"黄灯":0,"绿灯":1,"待更新":0,"节点数":4,"风险指数":10},{"责任部门":"研发中心","红灯":1,"黄灯":0,"绿灯":0,"待更新":0,"节点数":1,"风险指数":3},{"责任部门":"供应中心","红灯":1,"黄灯":0,"绿灯":0,"待更新":0,"节点数":1,"风险指数":3},{"责任部门":"采购部","红灯":0,"黄灯":1,"绿灯":0,"待更新":1,"节点数":2,"风险指数":2},{"责任部门":"联合部门","红灯":0,"黄灯":0,"绿灯":0,"待更新":1,"节点数":1,"风险指数":0}],"upcoming":[],"nodes":[{"波段":"Q071","节点序号":1,"关键节点":"订货会","计划时间":"","实际时间":"2026-03-24","偏差天数":"","节点状态":"待更新","责任部门":"联合部门","责任人":"/","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":0},{"波段":"Q071","节点序号":2,"关键节点":"下单时间","计划时间":"2026-03-24","实际时间":"2026-04-04","偏差天数":11,"节点状态":"🔴 延误","责任部门":"商品部","责任人":"马茜","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":3,"关键节点":"物料卡BOM交接","计划时间":"2026-04-02","实际时间":"2026-04-08","偏差天数":6,"节点状态":"🔴 延误","责任部门":"研发中心","责任人":"廖媚娜","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":4,"关键节点":"面料统计完成时间","计划时间":"2026-04-08","实际时间":"2026-04-10","偏差天数":2,"节点状态":"🟡 风险","责任部门":"采购部","责任人":"李珍","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":2},{"波段":"Q071","节点序号":5,"关键节点":"面料合同签定时间","计划时间":"2026-04-08","实际时间":"","偏差天数":"","节点状态":"待更新","责任部门":"采购部","责任人":"李珍","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":0},{"波段":"Q071","节点序号":6,"关键节点":"FOB合同签定","计划时间":"2026-04-21","实际时间":"2026-05-20","偏差天数":29,"节点状态":"🔴 延误","责任部门":"供应中心","责任人":"江小强","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":7,"关键节点":"面料入仓时间","计划时间":"2026-05-18","实际时间":"2026-06-22","偏差天数":35,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":8,"关键节点":"开裁","计划时间":"","实际时间":"","偏差天数":"","节点状态":"待更新","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":0},{"波段":"Q071","节点序号":9,"关键节点":"大货质检完成时间","计划时间":"2026-06-19","实际时间":"2026-06-23","偏差天数":4,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":10,"关键节点":"生产入仓时间","计划时间":"2026-06-20","实际时间":"2026-06-22","偏差天数":2,"节点状态":"🟡 风险","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":2},{"波段":"Q071","节点序号":11,"关键节点":"回货时间","计划时间":"2026-06-20","实际时间":"2026-06-28","偏差天数":8,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":12,"关键节点":"发货时间","计划时间":"2026-06-25","实际时间":"2026-06-30","偏差天数":5,"节点状态":"🔴 延误","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":13,"关键节点":"南上货时间","计划时间":"2026-06-30","实际时间":"2026-06-30","偏差天数":0,"节点状态":"🟢 正常","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":1},{"波段":"Q071","节点序号":14,"关键节点":"北上货时间","计划时间":"2026-06-30","实际时间":"2026-07-03","偏差天数":3,"节点状态":"🔴 延误","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3}]}],"allNodes":[{"波段":"30X061","节点序号":1,"关键节点":"下单时间","计划时间":"2025-12-19","实际时间":"2025-12-19","偏差天数":0,"节点状态":"🟢 正常","责任部门":"商品部","责任人":"马茜","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":1},{"波段":"30X061","节点序号":2,"关键节点":"物料卡BOM交接","计划时间":"2025-12-29","实际时间":"2025-12-31","偏差天数":2,"节点状态":"🟡 风险","责任部门":"研发中心","责任人":"廖媚娜","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":2},{"波段":"30X061","节点序号":3,"关键节点":"面料统计完成时间","计划时间":"2026-01-01","实际时间":"2026-01-01","偏差天数":0,"节点状态":"🟢 正常","责任部门":"采购部","责任人":"李珍","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":1},{"波段":"30X061","节点序号":4,"关键节点":"面料合同签定时间","计划时间":"2026-03-09","实际时间":"2026-03-13","偏差天数":4,"节点状态":"🔴 延误","责任部门":"采购部","责任人":"李珍","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"30X061","节点序号":5,"关键节点":"FOB合同签定","计划时间":"2026-03-24","实际时间":"2026-03-24","偏差天数":0,"节点状态":"🟢 正常","责任部门":"供应中心","责任人":"江小强","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":1},{"波段":"30X061","节点序号":6,"关键节点":"面料入仓时间","计划时间":"2026-04-23","实际时间":"2026-04-25","偏差天数":2,"节点状态":"🟡 风险","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":2},{"波段":"30X061","节点序号":7,"关键节点":"开裁","计划时间":"","实际时间":"","偏差天数":"","节点状态":"待更新","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":0},{"波段":"30X061","节点序号":8,"关键节点":"大货质检完成时间","计划时间":"2026-05-22","实际时间":"2026-05-27","偏差天数":5,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"30X061","节点序号":9,"关键节点":"生产入仓时间","计划时间":"2026-05-23","实际时间":"2026-05-26","偏差天数":3,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"30X061","节点序号":10,"关键节点":"回货时间","计划时间":"2026-05-23","实际时间":"","偏差天数":"","节点状态":"待更新","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":0},{"波段":"30X061","节点序号":11,"关键节点":"发货时间","计划时间":"2026-05-30","实际时间":"2026-05-30","偏差天数":0,"节点状态":"🟢 正常","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":1},{"波段":"30X061","节点序号":12,"关键节点":"南上货时间","计划时间":"2026-06-02","实际时间":"2026-06-05","偏差天数":3,"节点状态":"🔴 延误","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"30X061","节点序号":13,"关键节点":"北上货时间","计划时间":"2026-06-02","实际时间":"","偏差天数":"","节点状态":"待更新","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":0},{"波段":"Q071","节点序号":1,"关键节点":"订货会","计划时间":"","实际时间":"2026-03-24","偏差天数":"","节点状态":"待更新","责任部门":"联合部门","责任人":"/","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":0},{"波段":"Q071","节点序号":2,"关键节点":"下单时间","计划时间":"2026-03-24","实际时间":"2026-04-04","偏差天数":11,"节点状态":"🔴 延误","责任部门":"商品部","责任人":"马茜","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":3,"关键节点":"物料卡BOM交接","计划时间":"2026-04-02","实际时间":"2026-04-08","偏差天数":6,"节点状态":"🔴 延误","责任部门":"研发中心","责任人":"廖媚娜","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":4,"关键节点":"面料统计完成时间","计划时间":"2026-04-08","实际时间":"2026-04-10","偏差天数":2,"节点状态":"🟡 风险","责任部门":"采购部","责任人":"李珍","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":2},{"波段":"Q071","节点序号":5,"关键节点":"面料合同签定时间","计划时间":"2026-04-08","实际时间":"","偏差天数":"","节点状态":"待更新","责任部门":"采购部","责任人":"李珍","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":0},{"波段":"Q071","节点序号":6,"关键节点":"FOB合同签定","计划时间":"2026-04-21","实际时间":"2026-05-20","偏差天数":29,"节点状态":"🔴 延误","责任部门":"供应中心","责任人":"江小强","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":7,"关键节点":"面料入仓时间","计划时间":"2026-05-18","实际时间":"2026-06-22","偏差天数":35,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":8,"关键节点":"开裁","计划时间":"","实际时间":"","偏差天数":"","节点状态":"待更新","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":0},{"波段":"Q071","节点序号":9,"关键节点":"大货质检完成时间","计划时间":"2026-06-19","实际时间":"2026-06-23","偏差天数":4,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":10,"关键节点":"生产入仓时间","计划时间":"2026-06-20","实际时间":"2026-06-22","偏差天数":2,"节点状态":"🟡 风险","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":2},{"波段":"Q071","节点序号":11,"关键节点":"回货时间","计划时间":"2026-06-20","实际时间":"2026-06-28","偏差天数":8,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":12,"关键节点":"发货时间","计划时间":"2026-06-25","实际时间":"2026-06-30","偏差天数":5,"节点状态":"🔴 延误","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":13,"关键节点":"南上货时间","计划时间":"2026-06-30","实际时间":"2026-06-30","偏差天数":0,"节点状态":"🟢 正常","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":1},{"波段":"Q071","节点序号":14,"关键节点":"北上货时间","计划时间":"2026-06-30","实际时间":"2026-07-03","偏差天数":3,"节点状态":"🔴 延误","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3}],"mustDecide":[{"波段":"Q071","节点序号":7,"关键节点":"面料入仓时间","计划时间":"2026-05-18","实际时间":"2026-06-22","偏差天数":35,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":6,"关键节点":"FOB合同签定","计划时间":"2026-04-21","实际时间":"2026-05-20","偏差天数":29,"节点状态":"🔴 延误","责任部门":"供应中心","责任人":"江小强","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":2,"关键节点":"下单时间","计划时间":"2026-03-24","实际时间":"2026-04-04","偏差天数":11,"节点状态":"🔴 延误","责任部门":"商品部","责任人":"马茜","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":11,"关键节点":"回货时间","计划时间":"2026-06-20","实际时间":"2026-06-28","偏差天数":8,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":3,"关键节点":"物料卡BOM交接","计划时间":"2026-04-02","实际时间":"2026-04-08","偏差天数":6,"节点状态":"🔴 延误","责任部门":"研发中心","责任人":"廖媚娜","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"30X061","节点序号":8,"关键节点":"大货质检完成时间","计划时间":"2026-05-22","实际时间":"2026-05-27","偏差天数":5,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":12,"关键节点":"发货时间","计划时间":"2026-06-25","实际时间":"2026-06-30","偏差天数":5,"节点状态":"🔴 延误","责任部门":"商品部","责任人":"宋丽新","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"30X061","节点序号":4,"关键节点":"面料合同签定时间","计划时间":"2026-03-09","实际时间":"2026-03-13","偏差天数":4,"节点状态":"🔴 延误","责任部门":"采购部","责任人":"李珍","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"Q071","节点序号":9,"关键节点":"大货质检完成时间","计划时间":"2026-06-19","实际时间":"2026-06-23","偏差天数":4,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3},{"波段":"30X061","节点序号":9,"关键节点":"生产入仓时间","计划时间":"2026-05-23","实际时间":"2026-05-26","偏差天数":3,"节点状态":"🔴 延误","责任部门":"生产部","责任人":"钱桂花","当前卡点/问题":"","对策":"","解决时间":"","是否关闭":"","分值":3}],"deptAll":[{"责任部门":"生产部","红灯":5,"黄灯":2,"绿灯":0,"待更新":3,"节点数":10,"风险指数":19},{"责任部门":"商品部","红灯":4,"黄灯":0,"绿灯":3,"待更新":1,"节点数":8,"风险指数":15},{"责任部门":"采购部","红灯":1,"黄灯":1,"绿灯":1,"待更新":1,"节点数":4,"风险指数":6},{"责任部门":"研发中心","红灯":1,"黄灯":1,"绿灯":0,"待更新":0,"节点数":2,"风险指数":5},{"责任部门":"供应中心","红灯":1,"黄灯":0,"绿灯":1,"待更新":0,"节点数":2,"风险指数":4},{"责任部门":"联合部门","红灯":0,"黄灯":0,"绿灯":0,"待更新":1,"节点数":1,"风险指数":0}]};
+let activeBand = 'ALL';
+let statusMode = 'all';
+
+const bandButtons = document.getElementById('bandButtons');
+const statusButtons = document.getElementById('statusButtons');
+const kpisEl = document.getElementById('kpis');
+const focusPanel = document.getElementById('focusPanel');
+const detailTable = document.getElementById('detailTable');
+const timelineTooltip = document.getElementById('timelineTooltip');
+const currentTimeEl = document.getElementById('current-time');
+
+function updateTimeDisplays(){
+  const now = new Date();
+  const nowText = now.toLocaleString('zh-CN',{hour12:false});
+  currentTimeEl.textContent = '当前时间：' + nowText;
+}
+// 更新时间：页面加载那一刻固定
+(function(){
+  const t = new Date();
+  document.getElementById('meta-time').textContent = '更新时间：' + t.toLocaleString('zh-CN',{hour12:false});
+})();
+updateTimeDisplays();
+setInterval(updateTimeDisplays, 1000);
+document.getElementById('togglePlanned').addEventListener('change', render);
+document.getElementById('toggleLabels').addEventListener('change', render);
+
+function esc(v){ return String(v ?? '').replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s])); }
+function statusKey(s){ s = String(s||''); if (s.includes('红')||s.includes('延误')) return 'red'; if (s.includes('黄')||s.includes('风险')) return 'yellow'; if (s.includes('绿')||s.includes('正常')) return 'green'; return 'gray'; }
+function statusLabelCls(s){ const k = statusKey(s); return 'status-pill status-' + (k==='gray'?'green':k); }
+function statusDot(k){ const c = k==='red'?'var(--red)':k==='yellow'?'var(--yellow)':k==='green'?'var(--green)':'#cfd8e9'; return `<span class="status-dot" style="background:${c}"></span>`; }
+function allNodes(){ return DATA.allNodes || DATA.bands.flatMap(b=>b.nodes); }
+function currentBands(){ return activeBand==='ALL' ? DATA.bands : DATA.bands.filter(x=>x.band===activeBand); }
+function baseNodes(){ return currentBands().flatMap(b=>b.nodes.map(n=>({...n, __band:b.band}))); }
+function filteredNodes(){
+  let nodes = baseNodes();
+  if (statusMode==='redyellow') nodes = nodes.filter(n=>['red','yellow'].includes(statusKey(n.节点状态)));
+  if (statusMode==='red') nodes = nodes.filter(n=>statusKey(n.节点状态)==='red');
+  if (statusMode==='yellow') nodes = nodes.filter(n=>statusKey(n.节点状态)==='yellow');
+  return nodes;
+}
+function summarizeNodes(nodes){
+  const s = {red:0,yellow:0,green:0,pending:0,nodes:nodes.length};
+  nodes.forEach(n=>{ const k = statusKey(n.节点状态); if (k==='red') s.red++; else if (k==='yellow') s.yellow++; else if (k==='green') s.green++; else s.pending++; });
+  s.overall = s.red>0 ? '🔴 延误' : s.yellow>0 ? '🟡 风险' : s.green>0 ? '🟢 正常' : '待更新';
+  s.bands = currentBands().length;
+  return s;
+}
+function deptBreakdown(nodes){
+  const m = new Map();
+  nodes.forEach(n=>{
+    const d = n.责任部门 || '待明确';
+    if(!m.has(d)) m.set(d, {责任部门:d, 红灯:0, 黄灯:0, 绿灯:0, 待更新:0, 总数:0});
+    const row = m.get(d); row.总数++;
+    const k = statusKey(n.节点状态);
+    if(k==='red') row.红灯++; else if(k==='yellow') row.黄灯++; else if(k==='green') row.绿灯++; else row.待更新++;
+  });
+  return [...m.values()].sort((a,b)=>(b.红灯*3+b.黄灯*2+b.绿灯)-(a.红灯*3+a.黄灯*2+a.绿灯));
+}
+function formatDate(s){ if(!s) return ''; const d = new Date(s); if(isNaN(d)) return String(s); return (d.getMonth()+1)+'月'+d.getDate()+'日'; }
+function parseDate(s){ const d = new Date(s); return isNaN(d) ? null : d; }
+function buildButtons(){
+  const bands = [['ALL','总览'], ...DATA.bands.map(b=>[b.band,b.band])];
+  bandButtons.innerHTML = bands.map(([v,t])=>`<button class="btn ${activeBand===v?'active':''}" onclick="setBand('${v}')">${t}</button>`).join('');
+  const sts = [['all','全部状态'],['redyellow','只看红黄灯'],['red','只看红灯'],['yellow','只看黄灯']];
+  statusButtons.innerHTML = sts.map(([v,t])=>`<button class="btn secondary ${statusMode===v?'active':''}" onclick="setStatusMode('${v}')">${t}</button>`).join('');
+}
+function setBand(v){ activeBand=v; render(); }
+function setStatusMode(v){ statusMode=v; render(); }
+function fullscreenCard(btn){ const c = btn.closest('.card'); if (!document.fullscreenElement) c.requestFullscreen?.(); else document.exitFullscreen?.(); }
+window.fullscreenCard = fullscreenCard; window.setBand = setBand; window.setStatusMode = setStatusMode;
+
+function renderKpis(nodes){
+  const s = summarizeNodes(nodes);
+  const bandText = activeBand==='ALL' ? '全波段' : activeBand;
+  const overallCls = statusKey(s.overall);
+  kpisEl.innerHTML = `
+    <div class="kpi"><div class="label">查看范围</div><div class="value big">${bandText}</div></div>
+    <div class="kpi"><div class="label">整体状态</div><div class="value"><span class="status-pill status-${overallCls}">${statusDot(overallCls)}${esc(s.overall.replace(/[🟢🔴🟡]\s*/g,''))}</span></div></div>
+    <div class="kpi"><div class="label">红灯数</div><div class="value big red">${s.red}</div></div>
+    <div class="kpi"><div class="label">黄灯数</div><div class="value big yellow">${s.yellow}</div></div>
+    <div class="kpi"><div class="label">绿灯数</div><div class="value big green">${s.green}</div></div>
+    <div class="kpi"><div class="label">波段 / 节点</div><div class="value big">${s.bands} / ${s.nodes}</div></div>`;
+}
+
+function dateExtent(nodes){
+  const ds=[]; nodes.forEach(n=>{ const p=parseDate(n.计划时间), a=parseDate(n.实际时间); if(p) ds.push(p.getTime()); if(a) ds.push(a.getTime()); });
+  if(!ds.length){ const now=new Date(); return [new Date(now.getFullYear(),now.getMonth(),1), new Date(now.getFullYear(),now.getMonth()+2,1)]; }
+  ds.sort((a,b)=>a-b);
+  const minT = ds[0], maxT = ds[ds.length-1];
+  // 若最大最小超过18个月，用p90截断（过滤异常日期）
+  const eighteenMonths = 18*30*24*3600*1000;
+  const effectiveMax = (maxT - minT) > eighteenMonths ? ds[Math.floor(ds.length*0.88)] : maxT;
+  const minD = new Date(minT), maxD = new Date(effectiveMax);
+  return [
+    new Date(minD.getFullYear(), minD.getMonth()-1, 1),
+    new Date(maxD.getFullYear(), maxD.getMonth()+2, 1)
+  ];
+}
+function monthTicks(min,max){
+  const arr=[]; const d=new Date(min.getFullYear(), min.getMonth(), 1);
+  while(d<=max){ arr.push(new Date(d)); d.setMonth(d.getMonth()+1); }
+  return arr;
+}
+function xScale(date,min,max,w,padL,padR){ return padL + (date-min)/(max-min) * (w-padL-padR); }
+function labelY(base, idx){ return base + ((idx%2===0)?-24: -40); }
+
+function buildTooltipHTML(n){
+  const statusText = String(n.节点状态||'').replace(/[🟢🔴🟡]\s*/g,'');
+  return `<div><strong>${esc(n.波段 || activeBand)}</strong> / ${esc(n.关键节点 || '')}</div>
+    <div>责任部门：${esc(n.责任部门 || '')}</div>
+    <div>责任人：${esc(n.责任人 || '')}</div>
+    <div>计划时间：${esc(n.计划时间 || '')}</div>
+    <div>实际时间：${esc(n.实际时间 || '')}</div>
+    <div>偏差天数：${esc(n.偏差天数 ?? '')}</div>
+    <div>节点状态：${esc(statusText)}</div>`;
+}
+function tooltipAttr(n){
+  return `data-tooltip="${esc(buildTooltipHTML(n))}"`;
+}
+function bindTimelineTooltip(containerId){
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  el.onmousemove = (e)=>{
+    const node = e.target.closest('.timeline-node');
+    if(!node){ timelineTooltip.classList.remove('show'); return; }
+    timelineTooltip.innerHTML = node.getAttribute('data-tooltip') || '';
+    timelineTooltip.classList.add('show');
+    const offset = 16;
+    const tw = Math.min(timelineTooltip.offsetWidth || 240, 320);
+    const th = timelineTooltip.offsetHeight || 120;
+    let left = e.clientX + offset;
+    let top = e.clientY + offset;
+    if(left + tw > window.innerWidth - 12) left = e.clientX - tw - offset;
+    if(top + th > window.innerHeight - 12) top = e.clientY - th - offset;
+    timelineTooltip.style.left = left + 'px';
+    timelineTooltip.style.top = top + 'px';
+  };
+  el.onmouseleave = ()=> timelineTooltip.classList.remove('show');
+}
+
+
+function renderOverviewTimeline(nodes){
+  const selectedBands = currentBands();
+  const [min,max] = dateExtent(nodes);
+  const months = monthTicks(min,max);
+  const w = 960, padL = 80, padR = 34;
+  const showPlan = document.getElementById('togglePlanned').checked;
+
+  const cardW = 128, cardH = 78, cardGap = 6;
+  const connLen = 22;
+  const aboveH  = cardH + connLen + 6;
+  const belowH  = cardH + connLen + 6;
+  const dotH    = 50;
+  const rowH    = aboveH + dotH + belowH;
+  const topPad  = 28;
+
+  const bandStartY = [];
+  let curY = topPad;
+  selectedBands.forEach(band => { bandStartY.push(curY); curY += rowH + 16; });
+  const h = Math.max(280, curY);
+
+  let svg = `<svg viewBox="0 0 ${w} ${h}" width="100%" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<defs><filter id="glow"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+
+  months.forEach(mo => {
+    const x = xScale(mo,min,max,w,padL,padR);
+    svg += `<line x1="${x}" y1="16" x2="${x}" y2="${h-6}" stroke="rgba(102,141,198,.12)"/>`;
+    svg += `<text x="${x+2}" y="12" fill="#8db0df" font-size="11">${mo.getMonth()+1}月</text>`;
+  });
+
+  selectedBands.forEach((band, bi) => {
+    const sy    = bandStartY[bi];
+    const baseY = sy + aboveH + dotH/2;
+
+    svg += `<text x="8" y="${baseY+4}" fill="#eff6ff" font-size="15" font-weight="800">${band.band}</text>`;
+    svg += `<line x1="${padL}" y1="${baseY}" x2="${w-padR}" y2="${baseY}" stroke="rgba(212,225,244,.5)" stroke-dasharray="4 4"/>`;
+
+    const bf = band.nodes.filter(n => {
+      if (activeBand!=='ALL' && band.band!==activeBand) return false;
+      if (!filteredNodes().some(x=>x.波段===n.波段&&x.节点序号===n.节点序号)) return false;
+      return parseDate(n.实际时间)||parseDate(n.计划时间);
+    });
+    const xaList = bf.map(n=>{ const a=parseDate(n.实际时间); return a?xScale(a,min,max,w,padL,padR):null; });
+    const OLAP=10,GAP=10,doff=[];
+    xaList.forEach((xa,i)=>{
+      if(xa===null){doff.push(0);return;}
+      const cl=[];
+      for(let j=0;j<i;j++) if(xaList[j]!==null&&Math.abs(xaList[j]-xa)<OLAP) cl.push(doff[j]);
+      if(!cl.length){doff.push(0);return;}
+      const idx=cl.length; doff.push((idx%2===0?1:-1)*Math.ceil(idx/2)*GAP);
+    });
+
+    // 圆点
+    bf.forEach((n,ni)=>{
+      const p=parseDate(n.计划时间),a=parseDate(n.实际时间);
+      const xp=p?xScale(p,min,max,w,padL,padR):null;
+      const xa=xaList[ni],dy=doff[ni],cy=baseY+dy;
+      svg+=`<g class="timeline-node" ${tooltipAttr(n)}>`;
+      if(showPlan&&xp!==null) svg+=`<polygon points="${xp},${baseY-5} ${xp+4},${baseY} ${xp},${baseY+5} ${xp-4},${baseY}" fill="#dce6f6" opacity="0.8"/>`;
+      if(xp!==null&&xa!==null) svg+=`<line x1="${xp}" y1="${baseY}" x2="${xa}" y2="${cy}" stroke="#7fa9de" stroke-dasharray="3 3" opacity="0.5"/>`;
+      const k=statusKey(n.节点状态);
+      const col=k==='red'?'#ff5f73':k==='yellow'?'#ffbd3c':'#3be58f';
+      if(xa!==null) svg+=`<circle cx="${xa}" cy="${cy}" r="6" fill="${col}" stroke="#ebf3ff" stroke-width="1" filter="url(#glow)"/>`;
+      svg+=`</g>`;
+    });
+
+    // 红灯卡片：按时间排序，奇上偶下，碰撞时水平推开，斜线连回圆点
+    const redList = bf
+      .map((n,i)=>({n, dotX:xaList[i]}))
+      .filter(({n,dotX})=>dotX!==null&&statusKey(n.节点状态)==='red')
+      .sort((a,b)=>a.dotX-b.dotX);
+
+    // 分成上下两组（奇数序=上，偶数序=下）
+    const above=[], below=[];
+    redList.forEach(({n,dotX},ci)=>{ (ci%2===0?above:below).push({n,dotX}); });
+
+    // 防碰撞：先右推，超右边界后往左回推前面的卡片
+    function resolveCollision(list){
+      if(!list.length) return [];
+      // 初始位置：尽量对齐圆点，限制在边界内
+      const cx = list.map(({dotX}) => Math.max(padL, Math.min(dotX - cardW/2, w - padR - cardW)));
+      // 正向：右推
+      for(let i=1;i<cx.length;i++){
+        if(cx[i] < cx[i-1]+cardW+cardGap)
+          cx[i] = cx[i-1]+cardW+cardGap;
+      }
+      // 反向：如果右边超界，往左回推
+      if(cx[cx.length-1]+cardW > w-padR){
+        cx[cx.length-1] = w-padR-cardW;
+        for(let i=cx.length-2;i>=0;i--){
+          if(cx[i]+cardW+cardGap > cx[i+1])
+            cx[i] = cx[i+1]-cardW-cardGap;
+          if(cx[i] < padL) cx[i] = padL;
+        }
+      }
+      return cx;
+    }
+    const aboveCX = resolveCollision(above);
+    const belowCX = resolveCollision(below);
+
+    function drawCard(n, dotX, cx, cardY){
+      const cardCX=cx+cardW/2;
+      // 斜线：从圆点到卡片中心顶/底
+      const above2=(cardY<baseY);
+      const ly1=above2?baseY-6:baseY+6;
+      const ly2=above2?cardY+cardH:cardY;
+      svg+=`<line x1="${dotX}" y1="${ly1}" x2="${cardCX}" y2="${ly2}" stroke="#ff8090" stroke-width="1.1" stroke-dasharray="4 2" opacity="0.85"/>`;
+      svg+=`<rect x="${cx}" y="${cardY}" rx="5" ry="5" width="${cardW}" height="${cardH}" fill="rgba(20,5,12,0.94)" stroke="rgba(255,95,115,0.65)" stroke-width="1"/>`;
+      const name=String(n.关键节点||'');
+      let ty=cardY+13;
+      svg+=`<text x="${cardCX}" y="${ty}" text-anchor="middle" fill="#ff8090" font-size="10" font-weight="700">${name}</text>`;
+      ty+=4; svg+=`<line x1="${cx+5}" y1="${ty}" x2="${cx+cardW-5}" y2="${ty}" stroke="rgba(255,95,115,0.25)" stroke-width="0.8"/>`;
+      const dept=String(n.责任部门||''),owner=String(n.责任人||'');
+      const plan=String(n.计划时间||''),act=String(n.实际时间||'');
+      const diff=n.偏差天数!=null?'+'+n.偏差天数+'天':'';
+      [['责任',`${dept}·${owner}`],['计划',plan],['实际',act],['偏差',diff]].forEach(([lbl,val])=>{
+        ty+=14;
+        svg+=`<text x="${cx+6}" y="${ty}" fill="#7fa9de" font-size="8.5">${lbl}</text>`;
+        svg+=`<text x="${cx+cardW-5}" y="${ty}" text-anchor="end" fill="#eff6ff" font-size="8.5">${val}</text>`;
+      });
+    }
+
+    above.forEach(({n,dotX},i)=> drawCard(n, dotX, aboveCX[i], baseY-connLen-cardH));
+    below.forEach(({n,dotX},i)=> drawCard(n, dotX, belowCX[i], baseY+connLen));
+  });
+
+  svg+=`</svg>`;
+  document.getElementById('overviewTimeline').innerHTML=svg;
+  bindTimelineTooltip('overviewTimeline');
+  document.getElementById('overviewTitle').textContent=activeBand==='ALL'?'多波段横轴时间轴总览':activeBand+' 横轴时间轴';
+  document.getElementById('overviewSub').textContent=activeBand==='ALL'?'每行一个波段，适合管理层总览':'当前波段全节点沿时间横轴展开';
+}
+
+
+function renderFocus(nodes){
+  const s = summarizeNodes(nodes);
+  const bands = currentBands();
+  const dangerBand = bands.slice().sort((a,b)=>(b.red+b.yellow)-(a.red+a.yellow))[0];
+  const focus = [
+    `<div class="info-box"><h4>总览结论</h4><p><span class="status-pill status-${statusKey(s.overall)}">${statusDot(statusKey(s.overall))}${esc(s.overall.replace(/[🟢🔴🟡]\s*/g,''))}</span> 当前筛选：${statusMode==='all'?'全部状态':statusMode==='redyellow'?'只看红黄灯':statusMode==='red'?'只看红灯':'只看黄灯'}</p></div>`,
+    `<div class="info-box"><h4>最需关注波段</h4><p>${dangerBand ? dangerBand.band+' 当前红灯 '+dangerBand.red+' 个，黄灯 '+dangerBand.yellow+' 个。' : '暂无。'}</p></div>`,
+    `<div class="info-box"><h4>阅读建议</h4><p>先看横轴总览判断哪个波段拖尾最长，再切换到对应波段看各部门泳道与责任归属。</p></div>`
+  ];
+  focusPanel.innerHTML = focus.join('');
+}
+
+function renderDeptTimeline(nodes){
+  const depts = deptBreakdown(nodes);
+  const [min,max] = dateExtent(nodes);
+  const months = monthTicks(min,max);
+  const w = 960, rowH = 76, top = 50, h = Math.max(240, top + depts.length*rowH + 24), padL = 100, padR = 34;
+  const showLabels = false;
+  let svg = `<svg viewBox="0 0 ${w} ${h}" width="100%" xmlns="http://www.w3.org/2000/svg">`;
+  months.forEach(m=>{ const x=xScale(m,min,max,w,padL,padR); svg += `<line x1="${x}" y1="26" x2="${x}" y2="${h-22}" stroke="rgba(102,141,198,.15)"/>`; svg += `<text x="${x+2}" y="18" fill="#8db0df" font-size="12">${m.getMonth()+1}月</text>`; });
+  depts.forEach((dept,di)=>{
+    const y = top + di*rowH + 22;
+    svg += `<text x="8" y="${y+5}" fill="#eff6ff" font-size="15" font-weight="800">${dept.责任部门}</text>`;
+    svg += `<line x1="${padL}" y1="${y}" x2="${w-padR}" y2="${y}" stroke="rgba(212,225,244,.35)" />`;
+    const dn = nodes.filter(n=>(n.责任部门||'待明确')===dept.责任部门).sort((a,b)=>new Date(a.实际时间||a.计划时间)-new Date(b.实际时间||b.计划时间));
+    dn.forEach((n,ni)=>{
+      const p=parseDate(n.计划时间), a=parseDate(n.实际时间); const xp=p?xScale(p,min,max,w,padL,padR):null; const xa=a?xScale(a,min,max,w,padL,padR):null;
+      svg += `<g class="timeline-node" ${tooltipAttr(n)}>`;
+      if(xp&&xa) svg += `<line x1="${xp}" y1="${y}" x2="${xa}" y2="${y}" stroke="#7fa9de" stroke-dasharray="4 4" opacity="0.7"/>`;
+      if(xp) svg += `<polygon points="${xp},${y-7} ${xp+6},${y} ${xp},${y+7} ${xp-6},${y}" fill="#dce6f6" opacity="0.95"/>`;
+      const k=statusKey(n.节点状态), color = k==='red'?'#ff5f73':k==='yellow'?'#ffbd3c':'#3be58f';
+      if(xa) svg += `<circle cx="${xa}" cy="${y}" r="7" fill="${color}" stroke="#ebf3ff" stroke-width="1.1"/>`;
+      if(showLabels && xa){ const ly = (ni%2===0)? y-18 : y+28; svg += `<text x="${xa}" y="${ly}" text-anchor="middle" fill="#dce9fb" font-size="10">${String(n.关键节点).slice(0,6)}</text>`; }
+      svg += `</g>`;
+    });
+  });
+  svg += `</svg>`;
+  document.getElementById('deptTimeline').innerHTML = svg;
+  bindTimelineTooltip('deptTimeline');
+  document.getElementById('deptTimelineTitle').textContent = (activeBand==='ALL' ? '全波段' : activeBand) + ' 部门泳道时间轴';
+  document.getElementById('deptTimelineSub').textContent = '各部门已映射到总时间轴';
+}
+
+function renderDeptTable(nodes){
+  const rows = deptBreakdown(nodes);
+  document.getElementById('deptTableTitle').textContent = (activeBand==='ALL' ? '全波段' : activeBand) + ' 部门状态分布';
+  document.getElementById('deptTable').innerHTML = `<table class="table"><thead><tr><th>部门</th><th class="num">红</th><th class="num">黄</th><th class="num">绿</th><th class="num">待更新</th><th class="num">总数</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.责任部门)}</td><td class="num red">${r.红灯}</td><td class="num yellow">${r.黄灯}</td><td class="num green">${r.绿灯}</td><td class="num">${r.待更新}</td><td class="num">${r.总数}</td></tr>`).join('')}</tbody></table>`;
+}
+
+function renderDetail(nodes){
+  const cols = ['波段','节点序号','关键节点','计划时间','实际时间','偏差天数','节点状态','责任部门','责任人'];
+  detailTable.innerHTML = `<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${nodes.sort((a,b)=>String(a.波段).localeCompare(String(b.波段)) || (a.节点序号-b.节点序号)).map(n=>`<tr>${cols.map(c=>{ let v=n[c]??''; if(c==='节点状态') return `<td><span class="${statusLabelCls(v)}">${statusDot(statusKey(v))}${esc(String(v).replace(/[🟢🔴🟡]\s*/g,''))}</span></td>`; return `<td>${esc(v)}</td>`; }).join('')}</tr>`).join('')}</tbody>`;
+}
+
+function render(){
+  buildButtons();
+  const nodes = filteredNodes();
+  renderKpis(nodes);
+  renderOverviewTimeline(nodes);
+  renderFocus(nodes);
+  renderDeptTimeline(nodes);
+  renderDeptTable(nodes);
+  renderDetail(nodes);
+}
+render();
+</script>
+<style>
+:fullscreen #timelineTooltip,
+:-webkit-full-screen #timelineTooltip{
+  z-index:2147483647 !important;
+}
+</style>
+<script>
+(function(){
+  const tooltip = document.getElementById('timelineTooltip');
+  if(!tooltip) return;
+
+  function moveTooltipToActiveRoot(){
+    const fsEl = document.fullscreenElement || document.webkitFullscreenElement || null;
+    const target = fsEl || document.body;
+    if(tooltip.parentElement !== target){
+      target.appendChild(tooltip);
+    }
+  }
+
+  function hideTooltip(){
+    tooltip.classList.remove('show');
+  }
+
+  document.addEventListener('fullscreenchange', function(){
+    moveTooltipToActiveRoot();
+    hideTooltip();
+  });
+  document.addEventListener('webkitfullscreenchange', function(){
+    moveTooltipToActiveRoot();
+    hideTooltip();
+  });
+  window.addEventListener('resize', moveTooltipToActiveRoot);
+
+  // initial
+  moveTooltipToActiveRoot();
+})();
+</script>
+</body>
+</html>
